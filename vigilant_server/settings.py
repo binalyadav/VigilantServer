@@ -55,7 +55,7 @@ ROOT_URLCONF = 'vigilant_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR + '/templates/',], # <- here
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,6 +67,15 @@ TEMPLATES = [
         },
     },
 ]
+
+# Static files (CSS, JavaScript, Images) (You can find this at end of file)
+# https://docs.djangoproject.com/en/2.2/howto/static-files/ 
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 WSGI_APPLICATION = 'vigilant_server.wsgi.application'
 
@@ -118,4 +127,4 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+
