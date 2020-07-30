@@ -6,17 +6,59 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+  <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/paper-dashboard.min.css' %}">
-    <title>Login</title>
+    <style>
+      body {
+  background: #AED6F1  ;
+  }
+.fm {
+  margin-top: 25vh;
+}
+  
+    </style>
+   
+    
   </head>
   <body>
-      <div class="container">
-        <h1>Login!</h1>
+    <form class = "fm">
+      <div class="container-fluid">
+        
+        <div class = "row justify-content-center">
+          
+          <div class="col-sm-10 col-md-3 col-lg-4">
+            <div class="card login">
+              <div class="card-body">
+                <h5 class="card-title text-center">Vigilant Server</h5>
+                <div class="form-group">
+                  
+                  <input type="email" class="form-control" placeholder="E-mail Address" id="email">
+                </div>
+                <div class="form-group">
+                  
+                  <input type="password" class="form-control" placeholder="Password" id="pwd">
+                  <small id="suggestion" class="text-muted mt1">
+                    Must be 8-20 characters long.
+                    <a class="pull-right bottom mt1" href="#">Forgot password?</a>
+                </div>            
+                  <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                      <label class="custom-control-label" for="customCheck1">Remember Password</label>
+                    </div>
+                   <button type="submit" class="btn btn-primary">Login!</button>
+                   
+                
+
+              </div>  
+
+            
+             </div>
+        </div>
+      </div>
       </div>
    
-
+    </form>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery.min.js" ></script>
