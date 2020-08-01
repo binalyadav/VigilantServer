@@ -79,7 +79,13 @@ Coded by www.creative-tim.com
           </button>
         </div>
         <div class="modal-body">
-            <form> 
+            <form action="javascript:void(0)"  onsubmit="return registerUser()"> 
+              <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" placeholder="Enter Username" name="username" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
             <div class="form-group">
                 <label for="fname">First Name:</label>
                 <input type="text" class="form-control" id="fname" placeholder="Enter First Name" name="fname" required>
@@ -99,22 +105,17 @@ Coded by www.creative-tim.com
                 <div class="valid-feedback">Valid.</div>
                 <div class="invalid-feedback">Please fill out this field.</div>  
             </div>
-              <div class="form-group">
-                <label for="pwd">Password:</label>
-                <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd" required disabled>
-                <div class="valid-feedback">Valid.</div>
-                <div class="invalid-feedback">Please fill out this field.</div>
-              </div>
-              
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="submit" class="btn btn-primary" >Save changes</button>
         </div>
       </div>
     </div>
   </div>
 </form>
-      <footer class="footer footer-black  footer-white ">
+</div>
+
+      <footer class="footer footer-black  footer-white footer container ">
         <div class="container-fluid">
           <div class="row">
             <nav class="footer-nav">
@@ -148,16 +149,21 @@ Coded by www.creative-tim.com
   <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js">
 </script>
 <script>
-
+  let userTable;
     $( document ).ready(function() {
         getUsers();
 
     });
 
 function getUsers(){
-    $('#example').DataTable( {
+
+  // if table exist then destroy. and create again.
+    if(userTable){
+      $('#example').DataTable().destroy();
+    }
+    userTable = $('#example').DataTable( {
         ajax:  {
-        url: '/users',
+        url: '/users/',
         dataSrc: ''
     }, 
     columns: [
@@ -168,6 +174,27 @@ function getUsers(){
     ]  
     }); 
 }
+function registerUser(){
+  let requestBody = { username : $('#username').val() , first_name : $('#fname').val() , last_name : $('#lname').val(), email : $('#email').val()};
+
+   $.ajax({
+        type: 'POST',
+        url: "/users/",
+        data: requestBody,
+        async : false,
+        dataType: "json",
+        success: function(data) {
+          $('#addUserModal').modal('hide');
+          getUsers();
+        },
+        error: function(data) {
+          alert("Error");
+        },
+  });
+
+
+}
+
   </script>
 </body>
 
