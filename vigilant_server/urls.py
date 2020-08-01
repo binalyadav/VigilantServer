@@ -21,8 +21,10 @@ from django.urls import path, include
 urlpatterns = [
     
     path('admin/', admin.site.urls),
-    path('login/', TemplateView.as_view(template_name='login.html')),
-    path('register/', TemplateView.as_view(template_name='register.html')),
+    path('view/login/', TemplateView.as_view(template_name='login.html')),
+    path('view/register/', TemplateView.as_view(template_name='register.html')),
+    path('view/users/', TemplateView.as_view(template_name='users.html')),
+    path('view/organization/', TemplateView.as_view(template_name='organization.html')),
     path('', include('v_server.urls')),
     
 ]
