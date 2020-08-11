@@ -1,129 +1,546 @@
-<!--
-=========================================================
-* Paper Dashboard 2 - v2.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-2
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
-{% load static %}
+{% load static %} {% if user.is_authenticated %}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/paper-dashboard.min.css' %}">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'css/paper-dashboard.min.css' %}" />
+    <link
+      rel="stylesheet"
+      href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
     <style>
-        .dataTables_wrapper {
-            width: 100%;
-        }
-    </style>
-</head>
+      .dataTables_wrapper {
+        width: 100%;
+      }
+      .user {
+        font-size: 24px;
+        margin-right: 5%;
+        color: blue;
+        cursor: pointer;
+      }
+      .edit {
+        font-size: 24px;
+        margin-right: 5%;
+        color: #0e5817;
+        cursor: pointer;
+      }
 
-<body class="">
+      .delete {
+        font-size: 24px;
+        margin-right: 5%;
+        color: #f10808;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body class="">
     <!-- Extra details for Live View on GitHub Pages -->
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden;"
+      ></iframe
+    ></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <div class="wrapper ">
-        {% include "Sidebar.html" %}
-        <div class="main-panel">
-            <!-- Navbar -->
-            {% include "Navbar.html" %}
-            <!-- End Navbar -->
-            <div class="content">
-                <div class="row">
-                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addUserModal">
-                        + Add Organization
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Add Organization</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="orgname">Organization Name:</label>
-                                            <input type="text" class="form-control" id="orgname"
-                                                placeholder="Enter Organization Name" name="orgname" required>
-                                            <div class="valid-feedback">Valid.</div>
-                                            <div class="invalid-feedback">Please fill out this field.</div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <footer class="footer footer-black  footer-white ">
-                <div class="container-fluid ">
-                    <div class="row">
-                    
-                            <nav class="footer-nav">
-                                <ul>
-                                    <li><a href="https://www.creative-tim.com" target="_blank">Creative
-                                            Tim</a></li>
-                                    <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
-                                    <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
-                                </ul>
-                            </nav>
-                            <div class="credits ml-auto">
-                                <span class="copyright">
-                                    ©
-                                    <script>
-                                        document.write(new Date().getFullYear())
-                                    </script>, made with <i class="fa fa-heart heart"></i> by Creative
-                                    Tim
-                                </span>
-                            </div>
-                        
-                    </div>
-                </div>
-            </footer>
+    <div class="wrapper">
+      {% include "Sidebar.html" %}
+      <div class="main-panel">
+        <!-- Navbar -->
+        {% include "Navbar.html" %}
+        <!-- End Navbar -->
+        <div class="content">
+          <div class="row">
+            <button
+              type="button"
+              class="btn btn-dark"
+              data-toggle="modal"
+              data-target="#addOrganizationModal"
+            >
+              + Add Organization
+            </button>
+          </div>
+          <div class="row">
+            <table id="organization_info" class="display" style="width: 100%;">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" width="75%">Organization Name</th>
+                  <th scope="col" width="25%">Edit</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
         </div>
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="addOrganizationModal"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Add Organization
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <form
+                  action="javascript:void(0)"
+                  onsubmit="return addOrganization()"
+                >
+                  <div class="form-group">
+                    <label for="orgname">Organization Name:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="orgname"
+                      placeholder="Enter Organization Name"
+                      name="orgname"
+                      required
+                    />
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">
+                      Please fill out this field.
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="editOrganizationModal"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Edit Organization
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <form
+                  action="javascript:void(0)"
+                  onsubmit="return updateOrganization()"
+                >
+                  <input id="orgId" type="hidden" />
+                  <div class="form-group">
+                    <label for="editOrgName">Edit Organization Name:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="editOrgName"
+                      placeholder="Enter Organization Name"
+                      name="editOrgName"
+                      required
+                    />
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">
+                      Please fill out this field.
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                      Update
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="inputUserModal"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Users:
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <form
+                  action="javascript:void(0)"
+                  onsubmit="return assignUsers()"
+                >
+                  <input id="assignUserOrgId" type="hidden" />
+                  <div class="form-group">
+                    <label for="assignUserOrgName">Organization:</label>
+                    <input
+                      class="form-control"
+                      id="assignUserOrgName"
+                      disabled="disable"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="inputUser">Assign Users:</label>
+                    <select
+                      class="form-control"
+                      id="inputUser"
+                      name="inputUser"
+                      multiple="multiple"
+                      style="width: 100%;"
+                    >
+                    </select>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                      Update
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="footer footer-black footer-white">
+          <div class="container-fluid">
+            <div class="row">
+              <nav class="footer-nav">
+                <ul>
+                  <li>
+                    <a href="https://www.creative-tim.com" target="_blank"
+                      >Creative Tim</a
+                    >
+                  </li>
+                  <li>
+                    <a href="https://www.creative-tim.com/blog" target="_blank"
+                      >Blog</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.creative-tim.com/license"
+                      target="_blank"
+                      >Licenses</a
+                    >
+                  </li>
+                </ul>
+              </nav>
+              <div class="credits ml-auto">
+                <span class="copyright">
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , made with <i class="fa fa-heart heart"></i> by Creative Tim
+                </span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
     </div>
-
-
 
     <!--   Core JS Files   -->
 
     <script src="https://code.jquery.com/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
     <script src="{% static 'js/paper-dashboard.js' %}"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js">
-    </script>
-</body>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
+    <script>
+      let orgTable, orgUsersAssigned;
+      $(document).ready(function () {
+        getOrganizations();
+      });
+
+      function getOrganizations() {
+        // if table exist then destroy. and create again.
+        if (orgTable) {
+          $("#organization_info").DataTable().destroy();
+        }
+        orgTable = $("#organization_info").DataTable({
+          ajax: {
+            url: "/organizations/",
+            dataSrc: "",
+          },
+          columns: [
+            { data: "name" },
+
+            {
+              data: "",
+
+              render: function (data, type, row) {
+                return "<i class='nc-icon nc-single-02 user' onclick='inputUsers(this)'></i><i class='nc-icon nc-single-copy-04 edit' onclick='editOrganization(this)'></i><i class='nc-icon nc-simple-remove delete' onclick='deleteOrganization(this)'></i>";
+              },
+            },
+          ],
+        });
+      }
+
+      function addOrganization() {
+        let requestBody = { name: $("#orgname").val() };
+        $.ajax({
+          type: "POST",
+          url: "/organizations/",
+          data: requestBody,
+          async: false,
+          dataType: "json",
+          success: function (data) {
+            $("#addOrganizationModal").modal("hide");
+            getOrganizations();
+          },
+          error: function (data) {
+            alert("Error");
+          },
+        });
+      }
+
+      function editOrganization(event) {
+        let selectedRow = $("#organization_info")
+          .DataTable()
+          .row($(event).closest("tr"))
+          .data();
+        orgUsersAssigned = selectedRow.users;
+        $("#orgId").val(selectedRow.id);
+        $("#editOrgName").val(selectedRow.name);
+        $("#editOrganizationModal").modal("show");
+      }
+
+      function updateOrganization() {
+        console.log(orgUsersAssigned);
+        let requestBody = {
+          name: $("#editOrgName").val(),
+          id: $("#orgId").val(),
+          users: orgUsersAssigned,
+        };
+        console.log(requestBody);
+        $.ajax({
+          type: "PUT",
+          url: "/organizations/" + $("#orgId").val() + "/",
+          data: JSON.stringify(requestBody),
+          async: false,
+          dataType: "json",
+          contentType: "application/json",
+          success: function (data) {
+            $("#editOrganizationModal").modal("hide");
+            getOrganizations();
+          },
+          error: function (data) {
+            alert("Error");
+          },
+        });
+      }
+
+      function deleteOrganization(event) {
+        let selectedRow = $("#organization_info")
+          .DataTable()
+          .row($(event).closest("tr"))
+          .data();
+        $.ajax({
+          type: "DELETE",
+          url: "/organizations/" + selectedRow.id + "/",
+          async: false,
+          dataType: "json",
+          success: function (data) {
+            getOrganizations();
+          },
+          error: function (data) {
+            alert("Error");
+          },
+        });
+      }
+
+     
+      function inputUsers(event) {
+        let selectedRow = $("#organization_info")
+          .DataTable()
+          .row($(event).closest("tr"))
+          .data();
+
+        $("#assignUserOrgId").val(selectedRow.id);
+        $("#assignUserOrgName").val(selectedRow.name);
+        getAssignedUsers();
+        $("#inputUser").val(selectedRow.users).change();
+        $("#inputUserModal").modal("show");
+      }
+
+      function getUsers(assignedUserList) {
+        $.ajax({
+          type: "GET",
+          url: "/users/",
+          async: false,
+          dataType: "json",
+          success: function (data) {
+            $("#inputUser").html("");
+            let options = "";
+            let removeUsers = assignedUserList[1];
+            let orgUsers = assignedUserList[0].filter(
+              (ele) => ele.org == $("#assignUserOrgName").val()
+            );
+
+            removeUsers = removeUsers.filter(function (x) {
+              return orgUsers[0].assignedOrgUsers.indexOf(x) < 0;
+            });
+            for (let user of data) {
+              if (removeUsers.includes(user.id)) {
+                continue;
+              }
+              options += "<option value=" + user.id + ">";
+              options += user.username;
+              options += "</option>";
+            }
+            $("#inputUser").append(options);
+            $("#inputUser").select2({
+              width: "resolve",
+            });
+          },
+          error: function (data) {
+            alert("Error");
+          },
+        });
+      }
+
+      function assignUsers() {
+        let requestBody = {
+          id: $("#assignUserOrgId").val(),
+          name: $("#assignUserOrgName").val(),
+          users: $("#inputUser").val() == null ? [] : $("#inputUser").val(),
+        };
+        console.log(JSON.stringify(requestBody));
+        $.ajax({
+          type: "PUT",
+          url: "/organizations/" + $("#assignUserOrgId").val() + "/",
+          data: JSON.stringify(requestBody),
+          async: false,
+          dataType: "json",
+          contentType: "application/json",
+          success: function (data) {
+            getOrganizations();
+            $("#inputUserModal").modal("hide");
+          },
+          error: function (data) {
+            alert("Error");
+          },
+        });
+      }
+
+      function getAssignedUsers() {
+        $.ajax({
+          type: "GET",
+          url: "/organizations/",
+          async: false,
+          dataType: "json",
+          contentType: "application/json",
+          success: function (data) {
+            let response = [];
+            let assignedUsers = [];
+            for (let i = 0; i < data.length; i++) {
+              let assignedUsersByOrg = {};
+              assignedUsers = assignedUsers.concat(data[i]["users"]);
+              assignedUsersByOrg["org"] = data[i]["name"];
+              assignedUsersByOrg["assignedOrgUsers"] = data[i]["users"];
+              response.push(assignedUsersByOrg);
+            }
+            getUsers([response, assignedUsers]);
+          },
+          error: function (data) {
+            
+            alert("Error");
+          },
+        });
+      }
+    </script>
+  </body>
 </html>
+{% else %} {% include "unauthorized.html" %} {% endif %}

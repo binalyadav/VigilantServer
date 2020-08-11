@@ -17,14 +17,26 @@ from django.contrib import admin
 
 from django.views.generic import TemplateView
 from django.urls import path, include
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from .authentication import *
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
-    
+
     path('admin/', admin.site.urls),
     path('view/login/', TemplateView.as_view(template_name='login.html')),
     path('view/register/', TemplateView.as_view(template_name='register.html')),
     path('view/users/', TemplateView.as_view(template_name='users.html')),
-    path('view/organization/', TemplateView.as_view(template_name='organization.html')),
+    path('view/organizations/',
+         TemplateView.as_view(template_name='organization.html')),
+    path('view/endpoints/', TemplateView.as_view(template_name='endpoints.html')),
     path('', include('v_server.urls')),
-    
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('authenticate/', csrf_exempt(my_view), name='authenticate'),
+    path('view/unauthorized/', TemplateView.as_view(template_name='unauthorized.html'))
+
 ]
