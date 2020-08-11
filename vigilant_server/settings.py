@@ -26,7 +26,7 @@ SECRET_KEY = 'f7dlaml90san#oz%w_(gf@0+a3_dkz3e^^p0&#(0&9k6gibhjo'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+CSRF_COOKIE_SECURE = False
 
 # Application definition
 
@@ -50,13 +50,21 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+
+}
 
 ROOT_URLCONF = 'vigilant_server.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR + '/templates/',], # <- here
+        'DIRS': [BASE_DIR + '/templates/', ],  # <- here
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,7 +78,7 @@ TEMPLATES = [
 ]
 
 # Static files (CSS, JavaScript, Images) (You can find this at end of file)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/ 
+# https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
@@ -124,8 +132,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-APPEND_SLASH=False
+APPEND_SLASH = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-

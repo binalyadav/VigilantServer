@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'css/paper-dashboard.min.css' %}" />
+    <style>
+      body {
+        background: #FFDAD2;
+      }
+      .fm {
+        margin-top: 25vh;
+      }
+      img {
+  display: block;
+  top: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -14%;
+}
+
+    </style>
+  </head>
+  <body>
+    <form class="fm" action="javascript:void(0)" onsubmit="return login()">
+      <div class="container-fluid">
+        <img id= "img" src="{% static 'img/kisspng-http-404-error-user-interface-design-google-chrome-5af826e70b7f37.4263437615262123270471.png' %}" alt="404" class="center">
+        
+        <a class="row justify-content-center" href="/view/login/">
+        
+      
+          <h3 style="color:#0095C9; margin-top: 2%">Login Again !!</h3>
+        
+        </a>
+      </div>
+    </form>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'js/paper-dashboard.js' %}"></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
