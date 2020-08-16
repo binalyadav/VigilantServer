@@ -33,10 +33,12 @@ urlpatterns = [
     path('view/organizations/',
          TemplateView.as_view(template_name='organization.html')),
     path('view/endpoints/', TemplateView.as_view(template_name='endpoints.html')),
-    path('', include('v_server.urls')),
+
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('authenticate/', csrf_exempt(my_view), name='authenticate'),
-    path('view/unauthorized/', TemplateView.as_view(template_name='unauthorized.html'))
+    path('authenticate/', csrf_exempt(userLogin), name='authenticate'),
+    path('view/unauthorized/', TemplateView.as_view(template_name='unauthorized.html')),
+    path('logout/', csrf_exempt(userLogout), name='logout'),
+    path('', include('v_server.urls'))
 
 ]

@@ -27,7 +27,16 @@ class GroupSerializer(serializers.ModelSerializer):
 class OrganizationSerializer(serializers.ModelSerializer):
     users = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), many=True, required=False)
+    endpoints = serializers.PrimaryKeyRelatedField(
+        queryset=Endpoint.objects.all(), many=True, required=False)
 
     class Meta:
         model = Organization
-        fields = ["id", "name", "url", "users"]
+        fields = ["id", "name", "url", "users", "endpoints"]
+
+
+class EndpointSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Endpoint
+        fields = ["id", "port", "host", "url", "endpoint"]
