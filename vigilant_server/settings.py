@@ -25,7 +25,7 @@ SECRET_KEY = 'f7dlaml90san#oz%w_(gf@0+a3_dkz3e^^p0&#(0&9k6gibhjo'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 CSRF_COOKIE_SECURE = False
 
 # Application definition
