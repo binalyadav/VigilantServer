@@ -1,0 +1,312 @@
+
+{% load static %}
+{% if user.is_authenticated %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+      <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'css/paper-dashboard.min.css' %}">
+        <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+            <script src="https://code.jquery.com/jquery.min.js"></script>
+
+        <style>
+            .dataTables_wrapper{
+                width: 100%;
+            }
+            .editUserBtn {
+              font-size:24px;
+               margin-right: 5%;
+               color: #0e5817;
+               cursor: pointer;
+            }
+        </style>
+      </head>
+<body class="">
+  <!-- Extra details for Live View on GitHub Pages -->
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <div class="wrapper ">
+    {% include "sidebar.html" %}
+    <div class="main-panel">
+      <!-- Navbar -->
+      {% include "navbar.html" %}
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="row">
+            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addUserModal">
+            + Add User
+              </button>
+          
+        </div>
+        <div class="row">
+            <table id="user_info" class="display" style="width:100%">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Edit</th>
+                  </tr>
+                </thead>
+              </table>
+              
+              
+        </div>
+      </div>
+      <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="javascript:void(0)"  onsubmit="return registerUser()"> 
+              <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" placeholder="Enter Username" name="username" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+            <div class="form-group">
+                <label for="fname">First Name:</label>
+                <input type="text" class="form-control" id="fname" placeholder="Enter First Name" name="fname" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              
+              <div class="form-group" >
+                <label for="lname">Last Name:</label>
+                <input type="text" class="form-control" id="lname" placeholder="Enter Last Name" name="lname" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" placeholder="Enter email" id="email" name=" email" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>  
+            </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" >Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form action="javascript:void(0)"  onsubmit="return updateUser()">
+            <input id="userId" type="hidden" />
+            <div class="form-group">
+              <label for="editUsername"> Edit Username:</label>
+              <input type="text" class="form-control" id="editUsername" placeholder="Enter Username" name="editUsername" required>
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          <div class="form-group">
+              <label for="editFname">Edit First Name:</label>
+              <input type="text" class="form-control" id="editFname" placeholder="Enter First Name" name="editFname" required>
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+            
+            <div class="form-group" >
+              <label for="editLname">Edit Last Name:</label>
+              <input type="text" class="form-control" id="editLname" placeholder="Enter Last Name" name="editLname" required>
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+            <div class="form-group">
+              <label for="editEmail">Edit Email:</label>
+              <input type="editEmail" class="form-control" placeholder="Enter email" id="editEmail" name=" email" required>
+              <div class="valid-feedback">Valid.</div>
+              <div class="invalid-feedback">Please fill out this field.</div>  
+          </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" >Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+</div>
+
+      <footer class="footer footer-black  footer-white footer container ">
+        <div class="container-fluid">
+          <div class="row">
+            <nav class="footer-nav">
+              <ul>
+                <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
+                <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
+                <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
+              </ul>
+            </nav>
+            <div class="credits ml-auto">
+              <span class="copyright">
+                © <script>
+                  document.write(new Date().getFullYear())
+                </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  
+  
+  <!--   Core JS Files   -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="{% static 'js/paper-dashboard.js' %}"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js">
+</script>
+<script>
+  let userTable;
+    $( document ).ready(function() {
+        getUsers();
+
+    });
+
+function getUsers(){
+
+  // if table exist then destroy. and create again.
+    if(userTable){
+      $('#user_info').DataTable().destroy();
+    }
+    userTable = $('#user_info').DataTable( {
+        ajax:  {
+        url: '/users/',
+        dataSrc: ''
+    }, 
+    columns: [
+        { data: "first_name" },
+        { data: "last_name" },
+        { data: "username" },
+        { data: "email" },
+        {data: "",
+       
+        "render": function (data, type, row) {
+          return "<i class='nc-icon nc-single-copy-04 editUserBtn' onclick='editUser(this)'></i><i class='nc-icon nc-simple-remove' onclick='deleteUser(this)'  style='font-size:24px; margin-right: 5%;color: #f10808;cursor: pointer;'></i>"
+        }
+        }
+    ]  
+    }); 
+}
+function registerUser(){
+  let requestBody = { username : $('#username').val() , first_name : $('#fname').val() , last_name : $('#lname').val(), email : $('#email').val()};
+
+   $.ajax({
+        type: 'POST',
+        url: "/users/",
+        data: requestBody,
+        async : false,
+        dataType: "json",
+        success: function(data) {
+          $('#addUserModal').modal('hide');-
+          getUsers();
+        },
+        error: function(data) {
+          alert("Error");
+        },
+  });
+
+
+}
+
+function editUser(event){
+  let selectedRow = $("#user_info")
+          .DataTable()
+          .row($(event).closest("tr"))
+          .data();
+      console.log(selectedRow);
+            $('#userId').val(selectedRow.id);
+            $('#editUsername').val(selectedRow.username);
+            $('#editFname').val(selectedRow.first_name);
+            $('#editLname').val(selectedRow.last_name);
+            $('#editEmail').val(selectedRow.email);
+            $('#editUserModal').modal('show');
+}
+
+function updateUser() {
+    
+            let requestBody = { username: $('#editUsername').val(), id: $('#userId').val(), first_name: $('#editFname').val(), 
+            last_name: $('#editLname').val(), email: $('#editEmail').val()};
+            
+            console.log(requestBody);
+            $.ajax({
+                type: 'PUT',
+                url: "/users/" + $('#userId').val() + "/",
+                data: requestBody,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    $('#editUserModal').modal('hide');
+                    getUsers();
+                },
+                error: function (data) {
+                    alert("Error");
+                },
+            });
+
+
+        }
+
+function deleteUser(event){
+  let selectedRow = $("#user_info")
+                .DataTable()
+                .row($(event).closest("tr"))
+                .data();
+                $.ajax({
+                type: 'DELETE',
+                url: "/users/" + selectedRow.id + "/",
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    getUsers();
+                },
+                error: function (data) {
+                    alert("Error");
+                },
+            });
+}
+
+  </script>
+</body>
+
+</html>
+{% else %}
+{% include "unauthorized.html" %}
+ {% endif %}

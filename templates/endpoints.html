@@ -1,0 +1,385 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'css/paper-dashboard.min.css' %}" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery.min.js"></script>
+
+    <style>
+        .dataTables_wrapper {
+            width: 100%;
+        }
+
+        .editEndpointsBtn {
+              font-size:24px;
+               margin-right: 5%;
+               color: #0e5817;
+               cursor: pointer;
+            }
+    </style>
+</head>
+
+<body class="">
+    <!-- Extra details for Live View on GitHub Pages -->
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6" height="0" width="0"
+            style="display: none; visibility: hidden;"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="wrapper">
+        {% include "Sidebar.html" %}
+        <div class="main-panel">
+            <!-- Navbar -->
+            {% include "Navbar.html" %}
+            <!-- End Navbar -->
+            <div class="content">
+                <div class="row">
+                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addEndpointsModal">
+                        + Add Endpoints
+                    </button>
+                </div>
+                <div class="row">
+                    <table id="endpoint_info" class="display" style="width:100%">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col">Host</th>
+                            <th scope="col">Port</th>
+                            <th scope="col">End Point</th>
+                            <th scope="col">Edit</th>
+                          </tr>
+                        </thead>
+                      </table>
+                      
+                      
+                </div>
+              </div>
+
+ <!-- Modal -->
+            <div class="modal fade" id="addEndpointsModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Endpoints</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="javascript:void(0)"  onsubmit="return registerEndpoints()"> 
+                            <div class="form-group">
+                                <label for="host">Host:</label>
+                                <input type="text" class="form-control" id="host" placeholder="Enter Host"
+                                    name="host" required>
+                                <div class="valid-feedback">Valid.</div>
+                                <div class="invalid-feedback">Please fill out this field.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="port">Port:</label>
+                                <input type="text" class="form-control" id="port" placeholder="Enter Port Number:"
+                                    name="port" required>
+                                <div class="valid-feedback">Valid.</div>
+                                <div class="invalid-feedback">Please fill out this field.</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="endpoint">Endpoint</label>
+                                <input type="text" class="form-control" id="endpoint" placeholder="Enter Endpoint:"
+                                    name="endpoint" required>
+                                <div class="valid-feedback">Valid.</div>
+                                <div class="invalid-feedback">Please fill out this field.</div>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="parameters">Add Parameters</label>
+                                <select
+                                class="form-control"
+                                id="parameters"
+                                name="parameters"
+                                multiple="multiple"
+                                style="width: 100%"
+                                ></select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                    Close
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+
+<!-- Modal -->
+<div class="modal fade" id="editEndpointsModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Endpoints</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="javascript:void(0)"  onsubmit="return updateEndpoint()">
+              <input id="endpointId" type="hidden" />
+              <div class="form-group">
+                <label for="editHost"> Edit Host:</label>
+                <input type="text" class="form-control" id="editHost" placeholder="Enter Host:" name="editHost" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+            <div class="form-group">
+                <label for="editPort">Edit Port:</label>
+                <input type="text" class="form-control" id="editPort" placeholder="Enter Port:" name="editPort" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              
+              <div class="form-group" >
+                <label for="editEndpoint">Edit Endpoint:</label>
+                <input type="text" class="form-control" id="editEndpoint" placeholder="Enter Endpoint:" name="editEndpoint" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" >Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+  </div>
+
+
+
+
+            <footer class="footer footer-black  footer-white footer container ">
+                <div class="container-fluid">
+                    <div class="row">
+                        <nav class="footer-nav">
+                            <ul>
+                                <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
+                                <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
+                                <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
+                            </ul>
+                        </nav>
+                        <div class="credits ml-auto">
+                            <span class="copyright">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <!--   Core JS Files   -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'js/paper-dashboard.js' %}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    
+
+<script>
+    let endPointTable;
+      $( document ).ready(function() {
+        getEndpoints();
+         $("#parameters").select2({
+              width: "resolve",
+               tags: true
+            });
+       
+      });
+      function getEndpoints(){
+
+// if table exist then destroy. and create again.
+  if(endPointTable){
+    $('#endpoint_info').DataTable().destroy();
+  }
+  endPointTable = $('#endpoint_info').DataTable( {
+      ajax:  {
+      url: '/endpoints/',
+      dataSrc: ''
+  }, 
+  columns: [
+      { data: "host" },
+      { data: "port" },
+      { data: "endpoint" },
+      {data: "",
+     
+      "render": function (data, type, row) {
+        return "<i class='nc-icon nc-single-copy-04 editEndpointsBtn' onclick='editEndpoint(this)'></i><i class='nc-icon nc-simple-remove' onclick='deleteEndpoint(this)'  style='font-size:24px; margin-right: 5%;color: #f10808;cursor: pointer;'></i>"
+      }
+      }
+  ]  
+  }); 
+}
+
+function registerEndpoints(){
+  let requestBody = { host : $('#host').val() , port : $('#port').val() , endpoint : $('#endpoint').val(), parameters : $('#parameters').val().toString()};
+
+   $.ajax({
+        type: 'POST',
+        url: "/endpoints/",
+        data: requestBody,
+        async : false,
+        dataType: "json",
+        success: function(data) {
+            getOrganization(data.id);
+            $('#addEndpointsModal').modal('hide');
+            getEndpoints();
+        },
+        error: function(data) {
+          alert("Error");
+        },
+  });
+}
+
+ function assignOrgToEndpoint(orgId, endpoint){
+    let cookies = document.cookie.split('; ');
+    let orgName = cookies.filter(cookie => cookie.includes('orgName'))[0].split('=')[1].replace(/['"]+/g, '');
+    let requestBody = {  id : orgId , name : orgName , endpoints : endpoint};
+     $.ajax({
+        type: 'PUT',
+        url: "/organizations/" +  orgId + "/",
+        data: JSON.stringify(requestBody),
+        async: false,
+        dataType: "json",
+        contentType: "application/json",
+        success: function (data) {
+           return null;
+        },
+        error: function (data) {
+            alert("Error");
+        },
+    });
+
+ }
+
+ function getOrganization(newEndpoint){
+        let cookies = document.cookie.split('; ');
+        let orgId = cookies.filter(cookie => cookie.includes('orgId'))[0].split('=')[1];
+      $.ajax({
+          type: "GET",
+          url: "/organizations/"+orgId+"/",
+          async: false,
+          dataType: "json",
+          contentType: "application/json",
+          success: function (data) {
+                assignOrgToEndpoint(orgId, [...data.endpoints,newEndpoint]);
+          },
+          error: function (data) {
+            
+            alert("Error");
+          },
+        });
+ }
+
+function editEndpoint(event){
+  let selectedRow = $("#endpoint_info")
+          .DataTable()
+          .row($(event).closest("tr"))
+          .data();
+      console.log(selectedRow);
+            $('#endpointId').val(selectedRow.id);
+            $('#editHost').val(selectedRow.host);
+            $('#editPort').val(selectedRow.port);
+            $('#editEndpoint').val(selectedRow.endpoint);
+    
+            $('#editEndpointsModal').modal('show');
+}
+
+function updateEndpoint() {
+    
+    let requestBody = {host : $('#editHost').val() , port : $('#editPort').val() , endpoint : $('#editEndpoint').val()};
+
+    
+    console.log(requestBody);
+    $.ajax({
+        type: 'PUT',
+        url: "/endpoints/" + $('#endpointId').val() + "/",
+        data: requestBody,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            $('#editEndpointsModal').modal('hide');
+            getEndpoints();
+        },
+        error: function (data) {
+            alert("Error");
+        },
+    });
+
+
+}
+
+function deleteEndpoint(event){
+let selectedRow = $("#endpoint_info")
+        .DataTable()
+        .row($(event).closest("tr"))
+        .data();
+        $.ajax({
+        type: 'DELETE',
+        url: "/endpoints/" + selectedRow.id + "/",
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            getEndpoints();
+        },
+        error: function (data) {
+            alert("Error");
+        },
+    });
+}
+
+function addParams(){
+   
+//    let textInput = `<div class='queryParams form-group'><input type='text' placeholder = 'add param' class='col-md-4'/>
+//                     <button type='button' style='float:none; margin-right:5%' class='close' onclick='deleteInputEle(this)'>
+//                         <span aria-hidden='true'>&times;</span>
+//                     </button>
+//                     </div>`;
+//    $(textInput).insertBefore('#addParameter'); 
+//    let count = $('#addParameter').attr('count');
+//    count = parseInt(count);
+//    $('.queryParams').last().attr('id', 'params'+(count+1));
+//    $('#addParameter').attr('count', count+1);
+   $('#parameters').css('display','block');
+  
+}
+
+// function deleteInputEle(event){
+//     $(event).parent().remove();
+//     if($('.queryParams').length === 0){
+//          $('#parameters').css('display','none');
+//     }
+// }
+
+</script>
+</body>
+
+</html>
