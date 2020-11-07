@@ -7,6 +7,7 @@ from django.contrib.auth.models import User, Group
 from .models import *
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.sessions.models import Session
+from django.db.models import Count
 from django.http import JsonResponse
 import ast
 import json
@@ -55,8 +56,34 @@ class OrganizationViewSet(viewsets.ModelViewSet):
         response.set_cookie('orgName',  list(queryset.values())[0]['name'])
         return response
 
+    def getOrgId(self, orgId):
+        queryset = Organization.objects.select_related().all()
+        # print(queryset.values())
+        if orgId is None:
+            return None
+        queryset = queryset.filter(id=orgId)
+        return list(queryset.values('endpoints'))
+
 
 class EndpointViewSet(viewsets.ModelViewSet):
    # permission_classes = [IsAuthenticated]
     queryset = Endpoint.objects.all()
     serializer_class = EndpointSerializer
+
+    def getEndpointByid(self, ept):
+        queryset = Endpoint.objects.all()
+        if ept is None:
+            return None
+        # print(ept)
+        queryset = queryset.filter(endpoint=ept)
+        return list(queryset.values())
+
+
+class LogsViewSet(viewsets.ModelViewSet):
+    queryset = Logs.objects.all()
+    serializer_class = LogsSerializer
+
+    def getLogsByType(self):
+        queryset = Logs.objects.values(self.GET.get(
+            'type')).annotate(count=Count(self.GET.get('type')))
+        return JsonResponse({"data": list(queryset)})

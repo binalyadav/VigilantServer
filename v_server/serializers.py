@@ -39,4 +39,12 @@ class EndpointSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Endpoint
-        fields = ["id", "port", "host", "url", "endpoint"]
+        fields = ["id", "port", "host", "url", "endpoint", "parameters"]
+
+
+class LogsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Logs
+        fields = ["id", "ipAddress", "city", "region",
+                  "country", "latitude", "longitude"]

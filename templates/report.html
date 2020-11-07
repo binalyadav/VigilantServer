@@ -1,0 +1,286 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'css/paper-dashboard.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/dark-unica.css' %}" />
+    <link
+      rel="stylesheet"
+      href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+
+    <style></style>
+  </head>
+
+  <body class="">
+    <div class="wrapper">
+      {% include "Sidebar.html" %}
+      <div class="main-panel">
+        <!-- Navbar -->
+        {% include "Navbar.html" %}
+        <!-- End Navbar -->
+        <div class="content">
+          <div class="row">
+            <div class="container-fluid">
+              <div class="card card-nav-tabs card-plain">
+                <div class="card-header card-header-info">
+                  <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                  <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                      <ul class="nav nav-tabs" data-tabs="tabs">
+                        <li class="nav-item">
+                          <a
+                            class="nav-link active"
+                            href="#city"
+                            data-toggle="tab"
+                            id="cityTab"
+                            onclick="loadCityGraph()"
+                            ><b>City</b></a
+                          >
+                        </li>
+
+                        <li class="nav-item">
+                          <a
+                            class="nav-link"
+                            href="#country"
+                            data-toggle="tab"
+                            onclick="loadCountryGraph()"
+                            id="countryTab"
+                            ><b>Country</b></a
+                          >
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            class="nav-link"
+                            href="#region"
+                            data-toggle="tab"
+                            onclick="loadRegionGraph()"
+                            id="regionTab"
+                            ><b>Region</b></a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="tab-content text-center">
+                    <div class="tab-pane active" id="city">
+                      <div id="cityGraph" class="container-fluid mb-3"></div>
+                    </div>
+                    <div class="tab-pane" id="country">
+                      <div id="countryGraph" class="container-fluid mb-3"></div>
+                    </div>
+                    <div class="tab-pane" id="region">
+                      <div id="regionGraph" class="container-fluid mb-3"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer footer-black footer-white footer container">
+          <div class="container-fluid">
+            <div class="row">
+              <nav class="footer-nav">
+                <ul>
+                  <li>
+                    <a href="https://www.creative-tim.com" target="_blank"
+                      >Creative Tim</a
+                    >
+                  </li>
+                  <li>
+                    <a href="https://www.creative-tim.com/blog" target="_blank"
+                      >Blog</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.creative-tim.com/license"
+                      target="_blank"
+                      >Licenses</a
+                    >
+                  </li>
+                </ul>
+              </nav>
+              <div class="credits ml-auto">
+                <span class="copyright">
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , made with <i class="fa fa-heart heart"></i> by Creative Tim
+                </span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <!--   Core JS Files   -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'js/paper-dashboard.js' %}"></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script>
+      let plotData;
+      $(document).ready(function () {
+        getLogs("city");
+      });
+
+      function plotGraph(plotData) {
+        Highcharts.chart(plotData.label + "Graph", {
+          chart: {
+            type: "column",
+            height: 600,
+
+            style: {
+              fontFamily: "monospace",
+              color: "#f5f5f5",
+            },
+          },
+          title: {
+            text: "Number of Request by " + plotData.label,
+            style: {
+              color: "#f5f5f5",
+              font: 'bold 14px "Trebuchet MS", Verdana, sans-serif',
+            },
+          },
+
+          xAxis: {
+            categories: plotData.xAxis,
+            crosshair: true,
+            labels: {
+              style: {
+                color: "#f5f5f5",
+                font: "11px Trebuchet MS, Verdana, sans-serif",
+              },
+            },
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              text: "count (million)",
+              style: {
+                color: "#f5f5f5",
+                font: "11px Trebuchet MS, Verdana, sans-serif",
+              },
+            },
+            labels: {
+              style: {
+                color: "#f5f5f5",
+                font: "11px Trebuchet MS, Verdana, sans-serif",
+              },
+            },
+          },
+          tooltip: {
+            headerFormat:
+              '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat:
+              '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+              '<td style="padding:0"><b>{point.y}</td></tr>',
+            footerFormat: "</table>",
+            shared: true,
+            useHTML: true,
+            style: {
+              color: "#f5f5f5",
+              fontWeight: "bold",
+            },
+          },
+          plotOptions: {
+            column: {
+              pointPadding: 0.2,
+              borderWidth: 0,
+            },
+          },
+          series: [
+            {
+              color: "#6bc997",
+              name: plotData.label,
+              data: plotData.yAxis,
+            },
+          ],
+          legend: {
+            itemStyle: {
+              color: "#f5f5f5",
+              font: "11px Trebuchet MS, Verdana, sans-serif",
+            },
+          },
+        });
+      }
+
+      function loadCountryGraph() {
+        getLogs("country");
+      }
+
+      function loadRegionGraph() {
+        getLogs("region");
+      }
+
+      function loadCityGraph() {
+        getLogs("city");
+      }
+
+      function getLogs(type) {
+        $.ajax({
+          type: "GET",
+          url: "/getLogs/?type=" + type,
+          async: false,
+          dataType: "json",
+          success: function (response) {
+            let logs = response.data;
+            let plotData;
+            let xAxis = [];
+            let yAxis = [];
+            let label = type;
+            logs.filter((log) => {
+              xAxis.push(log[type]);
+              yAxis.push(log.count);
+            });
+            plotData = { xAxis, yAxis, label };
+            console.log(plotData);
+            plotGraph(plotData);
+          },
+
+          error: function (data) {
+            alert("Error");
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -60,7 +60,7 @@
                   <label
                     class="form-label"
                     id="invalidLogin"
-                    style="display: none; color: red; font-size: 14px;"
+                    style="display: none; color: red; font-size: 14px"
                     >Invalid Username or Password</label
                   >
                 </div>
@@ -91,7 +91,7 @@
   </body>
   <script>
     $(document).ready(function () {
-      if (document.cookie.indexOf("orgId=") > -1) {
+      if (document.cookie.indexOf("sessionid=") > -1) {
         window.location.href = "/view/register/";
       }
     });
