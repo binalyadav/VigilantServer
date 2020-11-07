@@ -1,39 +1,51 @@
-<div class="sidebar" data-color="white" data-active-color="danger">
-    <div class="logo">
-
-        <a href="https://www.creative-tim.com" class="simple-text logo-normal">
-            Vigilant Server
-            <!-- <div class="logo-image-big">
+<div class="sidebar" data-color="black" data-active-color="success">
+  <div class="logo">
+    <a href="https://www.creative-tim.com" class="simple-text logo-normal">
+      Vigilant Server
+      <!-- <div class="logo-image-big">
         <img src="../assets/img/logo-big.png">
         </div> -->
+    </a>
+  </div>
+  <div class="sidebar-wrapper">
+    <ul class="nav">
+      <li>
+        <a href="./dashboard.html">
+          <i class="nc-icon nc-bank"></i>
+          <p>Dashboard</p>
         </a>
-    </div>
-    <div class="sidebar-wrapper">
-        <ul class="nav">
-            <li>
-                <a href="./dashboard.html">
-                    <i class="nc-icon nc-bank"></i>
-                    <p>Dashboard</p>
-                </a>
-            </li>
-            <li>
-                <a href="/view/register/">
-                    <i class="nc-icon nc-bank"></i>
-                    <p>Users</p>
-                </a>
-            </li>
-            <li>
-                <a href="/view/organizations/">
-                    <i class="nc-icon nc-bank"></i>
-                    <p>Organization</p>
-                </a>
-            </li>
-            <li>
-                <a href="/view/endpoints/">
-                    <i class="nc-icon nc-bank"></i>
-                    <p>End Points</p>
-                </a>
-            </li>
-        </ul>
-    </div>
+      </li>
+      <li>
+        <a href="/view/register/">
+          <i class="nc-icon nc-single-02"></i>
+          <p>Users</p>
+        </a>
+      </li>
+      <li>
+        <a href="/view/organizations/">
+          <i class="nc-icon nc-bank"></i>
+          <p>Organization</p>
+        </a>
+      </li>
+      <li>
+        <a href="/view/endpoints/">
+          <i class="nc-icon nc-globe"></i>
+          <p>End Points</p>
+        </a>
+      </li>
+      <li>
+        <a href="/view/report/">
+          <i class="nc-icon nc-chart-bar-32"></i>
+          <p>Reports</p>
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>
+
+<script>
+  let activeTab = window.location.href.split(":8000")[1];
+  $("[href='" + activeTab + "']")
+    .parent()
+    .addClass("active");
+</script>

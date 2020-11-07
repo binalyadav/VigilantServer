@@ -1,17 +1,4 @@
-<!--
-=========================================================
-* Paper Dashboard 2 - v2.0.1
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-2
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -27,6 +14,8 @@ Coded by www.creative-tim.com
     <link rel="stylesheet" href="{% static 'css/paper-dashboard.min.css' %}" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery.min.js"></script>
+
     <style>
         .dataTables_wrapper {
             width: 100%;
@@ -48,10 +37,10 @@ Coded by www.creative-tim.com
             style="display: none; visibility: hidden;"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div class="wrapper">
-        {% include "sidebar.html" %}
+        {% include "Sidebar.html" %}
         <div class="main-panel">
             <!-- Navbar -->
-            {% include "navbar.html" %}
+            {% include "Navbar.html" %}
             <!-- End Navbar -->
             <div class="content">
                 <div class="row">
@@ -108,6 +97,17 @@ Coded by www.creative-tim.com
                                     name="endpoint" required>
                                 <div class="valid-feedback">Valid.</div>
                                 <div class="invalid-feedback">Please fill out this field.</div>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="parameters">Add Parameters</label>
+                                <select
+                                class="form-control"
+                                id="parameters"
+                                name="parameters"
+                                multiple="multiple"
+                                style="width: 100%"
+                                ></select>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -193,7 +193,6 @@ Coded by www.creative-tim.com
         </div>
     </div>
     <!--   Core JS Files   -->
-    <script src="https://code.jquery.com/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
@@ -201,13 +200,18 @@ Coded by www.creative-tim.com
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js">
-    </script>
+    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    
 
 <script>
     let endPointTable;
       $( document ).ready(function() {
         getEndpoints();
+         $("#parameters").select2({
+              width: "resolve",
+               tags: true
+            });
        
       });
       function getEndpoints(){
@@ -236,7 +240,7 @@ Coded by www.creative-tim.com
 }
 
 function registerEndpoints(){
-  let requestBody = { host : $('#host').val() , port : $('#port').val() , endpoint : $('#endpoint').val()};
+  let requestBody = { host : $('#host').val() , port : $('#port').val() , endpoint : $('#endpoint').val(), parameters : $('#parameters').val().toString()};
 
    $.ajax({
         type: 'POST',
@@ -351,6 +355,29 @@ let selectedRow = $("#endpoint_info")
         },
     });
 }
+
+function addParams(){
+   
+//    let textInput = `<div class='queryParams form-group'><input type='text' placeholder = 'add param' class='col-md-4'/>
+//                     <button type='button' style='float:none; margin-right:5%' class='close' onclick='deleteInputEle(this)'>
+//                         <span aria-hidden='true'>&times;</span>
+//                     </button>
+//                     </div>`;
+//    $(textInput).insertBefore('#addParameter'); 
+//    let count = $('#addParameter').attr('count');
+//    count = parseInt(count);
+//    $('.queryParams').last().attr('id', 'params'+(count+1));
+//    $('#addParameter').attr('count', count+1);
+   $('#parameters').css('display','block');
+  
+}
+
+// function deleteInputEle(event){
+//     $(event).parent().remove();
+//     if($('.queryParams').length === 0){
+//          $('#parameters').css('display','none');
+//     }
+// }
 
 </script>
 </body>
