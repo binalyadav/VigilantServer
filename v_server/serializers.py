@@ -47,4 +47,4 @@ class LogsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Logs
         fields = ["id", "ipAddress", "city", "region",
-                  "country", "latitude", "longitude"]
+                  "country", "latitude", "longitude", "timestamp", "status"]

@@ -34,6 +34,7 @@ urlpatterns = [
     path('view/organizations/',
          TemplateView.as_view(template_name='organization.html')),
     path('view/endpoints/', TemplateView.as_view(template_name='endpoints.html')),
+    path('view/dashboard/', TemplateView.as_view(template_name='dashboard.html')),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
