@@ -1,0 +1,462 @@
+{% load static %} {% if user.is_authenticated %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'css/paper-dashboard.min.css' %}" />
+    <link
+      rel="stylesheet"
+      href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+
+    <style>
+      .dataTables_wrapper {
+        width: 100%;
+        overflow: scroll;
+      }
+      .on {
+        color: lightseagreen;
+        font-weight: bolder;
+      }
+      .highcharts-data-table table {
+        font-family: Verdana, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #ebebeb;
+        margin: 10px auto;
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+      }
+      .highcharts-data-table caption {
+        padding: 1em 0;
+        font-size: 1.2em;
+        color: #555;
+      }
+    </style>
+  </head>
+
+  <body class="">
+    <!-- Extra details for Live View on GitHub Pages -->
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="wrapper">
+      {% include "sidebar.html" %}
+      <div class="main-panel">
+        <!-- Navbar -->
+        {% include "navbar.html" %}
+        <!-- End Navbar -->
+        <div class="content">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-5 col-md-4">
+                      <div class="icon-big text-center icon-warning">
+                        <i class="nc-icon nc-globe text-warning"></i>
+                      </div>
+                    </div>
+                    <div class="col-7 col-md-8">
+                      <div class="numbers">
+                        <p class="card-category">Users</p>
+                        <p class="card-title" id="userCount">0</p>
+                        <p></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <hr />
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-5 col-md-4">
+                      <div class="icon-big text-center icon-warning">
+                        <i class="nc-icon nc-money-coins text-success"></i>
+                      </div>
+                    </div>
+                    <div class="col-7 col-md-8">
+                      <div class="numbers">
+                        <p class="card-category">Organizations</p>
+                        <p class="card-title" id="organizationCount">0</p>
+                        <p></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <hr />
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-5 col-md-4">
+                      <div class="icon-big text-center icon-warning">
+                        <i class="nc-icon nc-vector text-danger"></i>
+                      </div>
+                    </div>
+                    <div class="col-7 col-md-8">
+                      <div class="numbers">
+                        <p class="card-category">Endpoint</p>
+                        <p class="card-title" id="endpointCount">0</p>
+                        <p></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <hr />
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-5 col-md-4">
+                      <div class="icon-big text-center icon-warning">
+                        <i class="nc-icon nc-favourite-28 text-primary"></i>
+                      </div>
+                    </div>
+                    <div class="col-7 col-md-8">
+                      <div class="numbers">
+                        <p class="card-category">Request</p>
+                        <p class="card-title">+45K</p>
+                        <p></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <hr />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="container-fluid">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    Recent Request
+                    <small
+                      style="float: right; cursor: pointer"
+                      id="autoRefresh"
+                    >
+                      <i class="nc-icon nc-refresh-69"></i
+                    ></small>
+                  </h5>
+
+                  <table
+                    id="logs_info"
+                    class="table-response table display"
+                    style="width: 100%"
+                  >
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" width="20%">Ip Address</th>
+                        <th scope="col" width="20%">City</th>
+                        <th scope="col" width="20%">Region</th>
+                        <th scope="col" width="10%">Country</th>
+                        <th scope="col" width="20%">Timestamp</th>
+                        <th scope="col" width="10%">Status</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="container-fluid">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Recent Request</h5>
+                  <div id="container"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer footer-black footer-white">
+          <div class="container-fluid">
+            <div class="row">
+              <nav class="footer-nav">
+                <ul>
+                  <li>
+                    <a href="https://www.creative-tim.com" target="_blank"
+                      >Creative Tim</a
+                    >
+                  </li>
+                  <li>
+                    <a href="https://www.creative-tim.com/blog" target="_blank"
+                      >Blog</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.creative-tim.com/license"
+                      target="_blank"
+                      >Licenses</a
+                    >
+                  </li>
+                </ul>
+              </nav>
+              <div class="credits ml-auto">
+                <span class="copyright">
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , made with <i class="fa fa-heart heart"></i> by Creative Tim
+                </span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!--   Core JS Files   -->
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'js/paper-dashboard.js' %}"></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script>
+      let logsTable;
+      let autoRefresh = false;
+      $(document).ready(function () {
+        getLogs();
+        buildPieChart();
+        getCounts();
+      });
+
+      function getLogs() {
+        // if table exist then destroy. and create again.
+        if (logsTable) {
+          $("#logs_info").DataTable().destroy();
+        }
+        logsTable = $("#logs_info").DataTable({
+          ajax: {
+            url: "/logs/?limit=10&ordering=-timestamp",
+            dataSrc: "results",
+          },
+          order: [[4, "desc"]],
+          paging: false,
+          pageLength: 5,
+          columns: [
+            { data: "ipAddress" },
+            { data: "city" },
+            { data: "region" },
+            { data: "country" },
+            {
+              data: "timestamp",
+              render: function (data, type, row) {
+                return new Date(data).toLocaleDateString();
+              },
+            },
+            {
+              data: "status",
+              render: function (data, type, row, meta) {
+                if (data == "successful") {
+                  $(row).css("background-color", "Orange");
+                }
+
+                return data;
+              },
+            },
+          ],
+          fnRowCallback: function (
+            nRow,
+            aData,
+            iDisplayIndex,
+            iDisplayIndexFull
+          ) {
+            if (aData.status == "successful") {
+              $(nRow).find("td:eq(5)").css("background-color", "#93edab");
+            }
+            if (aData.status == "blocked") {
+              $(nRow).find("td:eq(5)").css("background-color", "#ed9393");
+            }
+          },
+        });
+      }
+
+      function getCounts() {
+        $.ajax({
+          type: "GET",
+          url: "/userCount/",
+          async: false,
+          dataType: "json",
+          success: function (data) {
+            $("#userCount").html(data.data.userCount);
+          },
+          error: function (data) {
+            alert("Error");
+          },
+        });
+        $.ajax({
+          type: "GET",
+          url: "/organizationCount/",
+          async: false,
+          dataType: "json",
+          success: function (data) {
+            console.log(data.data.organizationCount);
+            $("#organizationCount").html(data.data.organizationCount);
+          },
+          error: function (data) {
+            alert("Error");
+          },
+        });
+        $.ajax({
+          type: "GET",
+          url: "/endpointCount/",
+          async: false,
+          dataType: "json",
+          success: function (data) {
+            $("#endpointCount").html(data.data.endpointCount);
+          },
+          error: function (data) {
+            alert("Error");
+          },
+        });
+      }
+
+      function buildPieChart() {
+        // Radialize the colors
+        Highcharts.setOptions({
+          colors: Highcharts.map(Highcharts.getOptions().colors, function (
+            color
+          ) {
+            return {
+              radialGradient: {
+                cx: 0.5,
+                cy: 0.3,
+                r: 0.7,
+              },
+              stops: [
+                [0, color],
+                [1, Highcharts.color(color).brighten(-0.3).get("rgb")], // darken
+              ],
+            };
+          }),
+        });
+
+        // Build the chart
+        Highcharts.chart("container", {
+          chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: "pie",
+          },
+          title: {
+            text: "Browser market shares in January, 2018",
+          },
+          tooltip: {
+            pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
+          },
+          accessibility: {
+            point: {
+              valueSuffix: "%",
+            },
+          },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: "pointer",
+              dataLabels: {
+                enabled: true,
+                format: "<b>{point.name}</b>: {point.percentage:.1f} %",
+                connectorColor: "silver",
+              },
+            },
+          },
+          series: [
+            {
+              name: "Share",
+              data: [
+                { name: "Chrome", y: 61.41 },
+                { name: "Internet Explorer", y: 11.84 },
+                { name: "Firefox", y: 10.85 },
+                { name: "Edge", y: 4.67 },
+                { name: "Safari", y: 4.18 },
+                { name: "Other", y: 7.05 },
+              ],
+            },
+          ],
+        });
+      }
+
+      $("#autoRefresh").click(function () {
+        if ($(this).hasClass("on")) {
+          $(this).removeClass("on");
+          autoRefresh = false;
+          refreshLogs();
+        } else {
+          $(this).addClass("on");
+          autoRefresh = true;
+          refreshLogs();
+        }
+      });
+      function refreshLogs() {
+        setInterval(function () {
+          if (autoRefresh) {
+            $("#autoRefresh").fadeOut(500);
+            $("#autoRefresh").fadeIn(500);
+            getLogs();
+          }
+        }, 5000);
+      }
+    </script>
+  </body>
+</html>
+{% else %} {% include "unauthorized.html" %} {% endif %}

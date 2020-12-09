@@ -29,13 +29,13 @@ def makeRequest(request, endpoint):
         url = endPnt[0]['host'] + endPnt[0]['endpoint']
     response = requests.get(url)
     geodata = response.json()
-    find_ipadd('142.68.25.142')
+    find_ipadd('13.71.3.3')
     return JsonResponse({"data": geodata})
 
 
 def checkLastRequest():
-    log = Logs.objects.filter(ipAddress='74.12.120.154')
-    if len(log.values()) > 0:
+    log = Logs.objects.filter(ipAddress='142.68.25.142')
+    if len(log.values()) > 4:
         last_request = log.values()[len(log) - 1]
         now = timezone.now()
         req_diff = (now - last_request['timestamp']).total_seconds()

@@ -1,5 +1,5 @@
 
-{% load static %}
+{% load static %} {% if user.is_authenticated %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,6 +19,7 @@
     <style>
         .dataTables_wrapper {
             width: 100%;
+            overflow: scroll;
         }
 
         .editEndpointsBtn {
@@ -49,7 +50,7 @@
                     </button>
                 </div>
                 <div class="row">
-                    <table id="endpoint_info" class="display" style="width:100%">
+                    <table id="endpoint_info" class="table display" style="width:100%">
                         <thead class="thead-dark">
                           <tr>
                             <th scope="col">Host</th>
@@ -383,3 +384,4 @@ function addParams(){
 </body>
 
 </html>
+{% else %} {% include "unauthorized.html" %} {% endif %}
