@@ -11,6 +11,9 @@ from django.db.models import Count
 from django.http import JsonResponse
 import ast
 import json
+from datetime import datetime, timedelta
+import pytz
+from rest_framework import filters
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -27,6 +30,10 @@ class UserViewSet(viewsets.ModelViewSet):
             return queryset
         queryset = User.objects.all().order_by('username')
         return queryset
+
+    def getCount(self):
+        count = User.objects.count()
+        return JsonResponse({"data": {"userCount": count}})
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -64,6 +71,10 @@ class OrganizationViewSet(viewsets.ModelViewSet):
         queryset = queryset.filter(id=orgId)
         return list(queryset.values('endpoints'))
 
+    def getCount(self):
+        count = Organization.objects.count()
+        return JsonResponse({"data": {"organizationCount": count}})
+
 
 class EndpointViewSet(viewsets.ModelViewSet):
    # permission_classes = [IsAuthenticated]
@@ -78,12 +89,28 @@ class EndpointViewSet(viewsets.ModelViewSet):
         queryset = queryset.filter(endpoint=ept)
         return list(queryset.values())
 
+    def getCount(self):
+        count = Endpoint.objects.count()
+        return JsonResponse({"data": {"endpointCount": count}})
+
 
 class LogsViewSet(viewsets.ModelViewSet):
     queryset = Logs.objects.all()
     serializer_class = LogsSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['timestamp']
 
     def getLogsByType(self):
         queryset = Logs.objects.values(self.GET.get(
             'type')).annotate(count=Count(self.GET.get('type')))
         return JsonResponse({"data": list(queryset)})
+
+    def getLogsByDateTimeRange(self):
+        queryset = Logs.objects.all()
+        timestamp_to = datetime.now().date() + timedelta(days=1)
+        timestamp_from = datetime.now().date() - timedelta(days=2)
+        print(timestamp_from)
+        print(timestamp_to)
+        queryset = queryset.filter(timestamp__gte=timestamp_from,
+                                   timestamp__lte=timestamp_to)
+        return JsonResponse({"data": list(queryset.values())})
