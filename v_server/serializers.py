@@ -40,7 +40,7 @@ class EndpointSerializer(serializers.ModelSerializer):
     class Meta:
         model = Endpoint
         fields = ["id", "port", "host", "url", "endpoint", "parameters"]
-
+## ip add tracking ##
 
 class LogsSerializer(serializers.ModelSerializer):
 
